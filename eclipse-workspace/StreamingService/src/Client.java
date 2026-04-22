@@ -10,7 +10,10 @@ public class Client {
             Socket socket = new Socket(HOST, PORT);
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in))
+            BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+            BufferedReader reader = new BufferedReader(new FileReader("/home/miguel/Desktop/a.txt"));
+        	
+        		
         ) {
             System.out.println("Connected to server");
 
