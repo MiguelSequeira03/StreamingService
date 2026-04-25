@@ -21,28 +21,32 @@ public class Server {
 
     private static void handleClient(Socket socket) {
         try (
-            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            FileInputStream byteFileIn = new FileInputStream("/home/miguel/Desktop/b.mp4");
-            OutputStream bytesOut = socket.getOutputStream();	
+        		DataInputStream in = new DataInputStream(socket.getInputStream());
+                DataOutputStream out = new DataOutputStream(socket.getOutputStream());	
         ) {
             String message;
             System.out.println("Preparing to send receive message");
-            while ((message = in.readLine()) != null) {
+            while (true) {
+            	message = in.readUTF();
             	if(message.equals("filme")) {
                     System.out.println("It is Filme");
+                    FileInputStream byteFileIn = new FileInputStream("/home/miguel/Desktop/rias.mp4");
+                    
+                    File file = new File("/home/miguel/Desktop/rias.mp4");
+                    out.writeLong(file.length());
+                    out.flush();
+                    
                     byte[] bytesBuffer = new byte[4096];
                     int bytesRead;
                     while ((bytesRead = byteFileIn.read(bytesBuffer)) != -1) {
-                        bytesOut.write(bytesBuffer, 0, bytesRead);
+                        out.write(bytesBuffer, 0, bytesRead);
                     }
+                    out.flush();
                     System.out.println("Filme Sent");
 
             	}
                  else {
-                	System.err.println("Its not filme");
-	                System.out.println("Received: " + message);
-	                out.println("Server received message");
+                	System.out.println("Its not filme");
                  }
             }
    
